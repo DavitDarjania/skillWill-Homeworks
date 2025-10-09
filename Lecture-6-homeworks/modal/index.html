@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      dialog::backdrop {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <button data-open-modal>Open Modal</button>
+    <dialog data-modal>
+      <h3>Some info...</h3>
+      <button data-close-modal>Close Modal</button>
+    </dialog>
+    <script src="./app.js"></script>
+  </body>
+</html>
