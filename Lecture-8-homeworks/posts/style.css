@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.post {
+  background-color: rgb(240, 240, 240);
+  border-radius: 8px;
+}
+.main_container {
+  max-width: 1080px;
+  width: 100%;
+  background-color: rgb(222, 222, 222);
+  margin: 0 auto;
+  padding: 42px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.post_title {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: rgba(220, 20, 60, 0.47);
+  padding: 5px;
+  width: fit-content;
+  color: #3a0e16;
+}
+.post_body {
+  background-color: rgb(255, 255, 255);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 5px;
+}
