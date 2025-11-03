@@ -3,15 +3,46 @@ import ToDoTask from "./ToDoTask";
 import ToDoTaskNon from "./ToDoTaskNon";
 
 class ToDoList extends Component {
-  state = {
-    inputVal: "",
-    nontasks: [
-      { number: 1, task: "Make Homework" },
-      { number: 2, task: "Make todolist" },
-    ],
-    completed: [{ number: 3, task: "Make Food" }],
-    counter: 4,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputVal: "",
+      nontasks: [
+        { number: 1, task: "Make Homework" },
+        { number: 2, task: "Make todolist" },
+      ],
+      completed: [{ number: 3, task: "Make Food" }],
+      counter: 5,
+    };
+  }
+  componentDidMount() {
+    console.log("ToDoList component mounted");
+  }
+  static getDerivedStateFromProps(props, state) {
+    if (
+      !(
+        state.nontasks.find((element) => element.number == 4) ||
+        state.completed.find((element) => element.number == 4)
+      )
+    ) {
+      return {
+        ...state,
+        nontasks: [...state.nontasks, { number: 4, task: "Get Derived State" }],
+      };
+    }
+    return false;
+  }
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    return prevState;
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(`Input Before Update: ${snapshot.inputVal}`);
+    console.log(`Input After Update: ${this.state.inputVal}`);
+  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return this.state.inputVal === nextState.inputVal;
+  // }
+
   onChange = (event) => {
     this.setState({ inputVal: event.target.value });
   };
@@ -60,11 +91,12 @@ class ToDoList extends Component {
   render() {
     return (
       <div className="tasks_box">
-        <form className="form">
+        <form className="form" onSubmit={this.onSubmitForm}>
           <input
             onChange={this.onChange}
             type="text"
             placeholder="Input New Task"
+            className="myInput"
             value={this.state.inputVal}
           />
           <button onClick={this.onAdd} type="submit">
