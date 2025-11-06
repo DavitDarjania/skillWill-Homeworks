@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.tasks_box {
+  display: flex;
+  gap: 40px;
+  margin: 0 auto;
+  width: fit-content;
+  margin-top: 70px;
+}
+.non_completed_tasks,
+.completed_tasks {
+  width: 400px;
+  background-color: rgb(234, 234, 234);
+  min-height: 30vh;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.non_completed_tasks h3,
+.completed_tasks h3 {
+  color: rgb(0, 94, 0);
+}
+.task {
+  border: 1px rgb(0, 94, 0) solid;
+  padding: 5px 3px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.task button {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.form {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -120%);
+}
+.form input,
+.form button {
+  padding: 10px 5px;
+}
