@@ -1,12 +1,10 @@
 import TaskWrapper from "./components/TaskWrapper";
 import "./App.css";
+import { RouterProvider } from "react-router-dom";
+import router from "../router/router";
 
 const App = () => {
-  return (
-    <>
-      <TaskWrapper />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

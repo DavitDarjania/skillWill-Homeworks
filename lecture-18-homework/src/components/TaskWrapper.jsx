@@ -1,19 +1,48 @@
 import { useEffect, useState } from "react";
 import Tasks from "./Tasks";
+import useGetRequest from "../hooks/useGetRequest";
 
 const TaskWrapper = () => {
-  const [tasks, setTasks] = useState([
-    // { id: 1, name: "Do Homework", isCompleted: true },
-    // { id: 2, name: "Do Homework2", isCompleted: false },
-    // { id: 3, name: "Do Homework3", isCompleted: true },
-    // { id: 4, name: "Do Homework4", isCompleted: false },
-  ]);
   const [inputVal, setInputVal] = useState("");
-  useEffect(() => {
-    fetch("https://691e0824bb52a1db22bcd3fd.mockapi.io/todo/tasks")
+  const { tasks, setTasks, refetch } = useGetRequest();
+  const onComplete = async (id) => {
+    const task = tasks.find((t) => t.id === id);
+    if (!task) return;
+
+    const current = task.isCompleted === true || task.isCompleted === "true";
+    const toggled = !current;
+
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, isCompleted: toggled } : t))
+    );
+
+    try {
+      const res = await fetch(
+        `https://691e0824bb52a1db22bcd3fd.mockapi.io/todo/tasks/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: task.name, isCompleted: toggled }),
+        }
+      );
+      const updated = await res.json();
+    } catch (err) {
+      setTasks((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, isCompleted: current } : t))
+      );
+    }
+  };
+
+  const onDelete = (id) => {
+    fetch(`https://691e0824bb52a1db22bcd3fd.mockapi.io/todo/tasks/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => res.json())
-      .then((data) => setTasks(data));
-  }, []);
+      .then(() => refetch());
+  };
   const onSubmit = (event) => {
     event.preventDefault();
     fetch("https://691e0824bb52a1db22bcd3fd.mockapi.io/todo/tasks", {
@@ -61,6 +90,8 @@ const TaskWrapper = () => {
                   id={el.id}
                   name={el.name}
                   isCompleted={el.isCompleted}
+                  action={onDelete}
+                  actionPut={onComplete}
                 />
               );
             }
@@ -78,6 +109,8 @@ const TaskWrapper = () => {
                   id={el.id}
                   name={el.name}
                   isCompleted={el.isCompleted}
+                  action={onDelete}
+                  actionPut={onComplete}
                 />
               );
             }
