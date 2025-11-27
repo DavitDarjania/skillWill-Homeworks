@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Tasks from "./Tasks";
 import useGetRequest from "../hooks/useGetRequest";
+import { useLanguageContext } from "../context/LanguageContext";
 
 const TaskWrapper = () => {
   const [inputVal, setInputVal] = useState("");
   const { tasks, setTasks, refetch } = useGetRequest();
+  const { currentMap } = useLanguageContext();
   const onComplete = async (id) => {
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
@@ -66,7 +68,7 @@ const TaskWrapper = () => {
           onChange={(event) => setInputVal(event.target.value)}
           className="bg-white me-3 rounded-sm py-1 px-2 border border-green-700"
           type="text"
-          placeholder="Input New Task..."
+          placeholder={currentMap.form.placeholder}
           value={inputVal}
         />
         <button
@@ -80,7 +82,7 @@ const TaskWrapper = () => {
       <div className="flex gap-5 pt-3">
         <article className="w-[350px] min-h-[450px] border bg-green-300 rounded-md shadow-md shadow-gray-400 hover:shadow-lg transition-shadow duration-200 px-4 pb-2">
           <h2 className="p-2 shadow-white shadow-md text-xl text-green-900 bg-green-100 w-fit mx-auto rounded-lg mt-2">
-            Non Completed
+            {currentMap.component.nonCompleted}
           </h2>
           {tasks.map((el) => {
             if (!el.isCompleted) {
@@ -99,7 +101,7 @@ const TaskWrapper = () => {
         </article>
         <article className="w-[350px] min-h-[450px] border bg-green-300 rounded-md shadow-md shadow-gray-400 hover:shadow-lg transition-shadow duration-200 px-4">
           <h2 className="p-2 shadow-white shadow-md text-xl text-green-900 bg-green-100 w-fit mx-auto rounded-lg mt-2">
-            Completed
+            {currentMap.component.completed}
           </h2>
           {tasks.map((el) => {
             if (el.isCompleted) {

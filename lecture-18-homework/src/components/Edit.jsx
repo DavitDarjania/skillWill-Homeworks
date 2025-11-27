@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLanguageContext } from "../context/LanguageContext";
 
 const Edit = () => {
   const [inputVal, setInputVal] = useState("");
   const { taskId } = useParams();
+  const { currentMap } = useLanguageContext();
   const navigate = useNavigate();
-  console.log(taskId);
 
   const onUpdate = (event) => {
     event.preventDefault();
@@ -30,7 +31,7 @@ const Edit = () => {
           onChange={(event) => setInputVal(event.target.value)}
           className="bg-white me-3 rounded-sm py-1 px-2 border border-green-700"
           type="text"
-          placeholder="Input New Task..."
+          placeholder={currentMap.form.placeholder}
           value={inputVal}
         />
         <button
@@ -38,7 +39,7 @@ const Edit = () => {
           type="submit"
           className="flex items-center justify-center text-sm bg-green-300 p-2 hover:bg-green-50 rounded-md active:bg-green-800 transition-colors duration-100"
         >
-          Update
+          {currentMap.form.button}
         </button>
       </form>
     </main>
