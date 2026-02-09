@@ -10,6 +10,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../context/userAuth/auth";
+import { $axios } from "../axios/axios";
 
 const pages = [
   { label: "Main", path: "/" },
@@ -30,9 +32,7 @@ function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const [auth, setAuth] = React.useState({
-    token: true,
-  });
+  const { user: userToken } = useUserContext();
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -66,7 +66,7 @@ function Navbar() {
             >
               {pages.map((page) => {
                 if (
-                  auth.token &&
+                  userToken &&
                   (page.label == "Main" || page.label == "Protected")
                 ) {
                   return (
@@ -81,7 +81,7 @@ function Navbar() {
                     </MenuItem>
                   );
                 } else if (
-                  !auth.token &&
+                  !userToken &&
                   (page.label == "Register" ||
                     page.label == "Protected" ||
                     page.label == "Main" ||
@@ -100,10 +100,12 @@ function Navbar() {
                   );
                 }
               })}
-              {auth.token && (
+              {userToken && (
                 <MenuItem
                   key={"logout"}
-                  onClick={() => setAuth({ token: false })}
+                  onClick={() => {
+                    $axios.post("/logout");
+                  }}
                 >
                   <Typography>Logout</Typography>
                 </MenuItem>
@@ -113,7 +115,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => {
               if (
-                auth.token &&
+                userToken &&
                 (page.label == "Main" || page.label == "Protected")
               ) {
                 return (
@@ -128,7 +130,7 @@ function Navbar() {
                   </Button>
                 );
               } else if (
-                !auth.token &&
+                !userToken &&
                 (page.label == "Register" ||
                   page.label == "Protected" ||
                   page.label == "Main" ||
@@ -147,13 +149,13 @@ function Navbar() {
                 );
               }
             })}
-            {auth.token && (
+            {userToken && (
               <Button
                 key={"logout"}
                 sx={{ my: 2, color: "white", display: "block" }}
                 onClick={() => {
                   handleCloseNavMenu;
-                  setAuth({ token: false });
+                  $axios.post("/logout");
                 }}
               >
                 <Typography>Logout</Typography>

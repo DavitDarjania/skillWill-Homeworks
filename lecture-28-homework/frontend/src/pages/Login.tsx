@@ -2,15 +2,19 @@ import { Button, TextField } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import type { IAuth } from "../interfaces/Auth";
-import { axiosApi } from "../axios/axios";
+import { $axios } from "../axios/axios";
+import { useUserContext } from "../context/userAuth/auth";
 
 const Login: React.FC = () => {
   const myForm = useForm<IAuth>();
   const { register, handleSubmit } = myForm;
+  const { setUser, setToken } = useUserContext();
   const onSubmit = async (data: IAuth) => {
     try {
       console.log(JSON.stringify(data));
-      const res = await axiosApi.post("/login", { ...data });
+      const res = await $axios.post("/login", { ...data });
+      setUser(res.data.user);
+      setToken(res.data.accessToken);
       console.log(res);
     } catch (error) {
       console.log(error);

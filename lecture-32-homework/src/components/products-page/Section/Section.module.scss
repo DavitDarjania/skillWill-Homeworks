@@ -1,0 +1,15 @@
+.section {
+  background-color: rgba(80, 177, 80, 0.489);
+  color: rgb(65, 65, 65);
+  border-radius: 20px;
+  box-shadow: 10px 5px 5px rgb(168, 168, 168);
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.mainBox {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}

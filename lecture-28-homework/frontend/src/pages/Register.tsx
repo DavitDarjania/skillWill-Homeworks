@@ -2,17 +2,21 @@ import { Button, TextField } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import type { IAuth } from "../interfaces/Auth";
-import { axiosApi } from "../axios/axios";
+import { $axios } from "../axios/axios";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/userAuth/auth";
 
 const Register: React.FC = () => {
   const myForm = useForm<IAuth>();
   const navigate = useNavigate();
   const { register, handleSubmit } = myForm;
+  const { setToken, setUser } = useUserContext();
   const onSubmit = async (data: IAuth) => {
     try {
       console.log(JSON.stringify(data));
-      const res = await axiosApi.post("/registration", { ...data });
+      const res = await $axios.post("/registration", { ...data });
+      setUser(res.data.user);
+      setToken(res.data.accessToken);
       console.log(res);
       navigate("/");
     } catch (error) {
